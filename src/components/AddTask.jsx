@@ -1,8 +1,12 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { TaskContext, TaskDispatchContext } from "../context/TasksContext";
+import { getNextId } from "../utils/getNextId";
 
-export default function AddTask({ onAdd }) {
+export default function AddTask() {
   const [text, setText] = useState("");
 
+  const dispatch = useContext(TaskDispatchContext);
+  const tasks = useContext(TaskContext);
   const handleChangeText = (e) => {
     setText(e.target.value);
   };
@@ -22,7 +26,12 @@ export default function AddTask({ onAdd }) {
         className="ml-2 bg-teal-700 text-white rounded-md px-2 py-1"
         onClick={() => {
           setText("");
-          onAdd(text);
+          // onAdd(text);
+          dispatch({
+            type: "added",
+            text,
+            id: getNextId(tasks),
+          });
         }}
       >
         Add

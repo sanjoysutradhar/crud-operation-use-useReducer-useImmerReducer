@@ -1,6 +1,7 @@
-import { useImmerReducer } from "node_modules/use-immer/dist/index";
+import { useImmerReducer } from "use-immer";
 import AddTask from "./components/AddTask";
 import TaskList from "./components/TaskList";
+import { TaskContext, TaskDispatchContext } from "./context/TasksContext";
 import { initialTasks } from "./data/tasks";
 import taskReducer from "./reducers/taskReducer";
 
@@ -64,16 +65,27 @@ export default function App() {
   };
 
   return (
-    <div className="mt-5 ml-5">
-      <h1>Prague itinerary</h1>
+    //   <div className="mt-5 ml-5">
+    //   <h1>Prague itinerary</h1>
 
-      <AddTask onAdd={handleAddTask} />
+    //   <AddTask onAdd={handleAddTask} />
 
-      <TaskList
-        tasks={tasks}
-        onChangeTask={handleChangeTask}
-        onDeleteTask={handleDeleteTask}
-      />
-    </div>
+    //   <TaskList
+    //     tasks={tasks}
+    //     onChangeTask={handleChangeTask}
+    //     onDeleteTask={handleDeleteTask}
+    //   />
+    // </div>
+    <TaskContext.Provider value={tasks}>
+      <TaskDispatchContext.Provider value={dispatch}>
+        <div className="mt-5 ml-5">
+          <h1>Prague itinerary</h1>
+
+          <AddTask />
+
+          <TaskList />
+        </div>
+      </TaskDispatchContext.Provider>
+    </TaskContext.Provider>
   );
 }

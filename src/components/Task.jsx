@@ -1,7 +1,9 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { TaskDispatchContext } from "../context/TasksContext";
 
-export default function Task({ task, onDeleteTask, onChangeTask }) {
+export default function Task({ task }) {
   const [isEditing, setIsEditing] = useState(false);
+  const dispatch = useContext(TaskDispatchContext);
 
   let taskContent;
 
@@ -16,9 +18,16 @@ export default function Task({ task, onDeleteTask, onChangeTask }) {
          focus:shadow-outline"
           value={task.text}
           onChange={(e) => {
-            onChangeTask({
-              ...task,
-              text: e.target.value,
+            // onChangeTask({
+            //   ...task,
+            //   text: e.target.value,
+            // });
+            dispatch({
+              type: "changed",
+              task: {
+                ...task,
+                text: e.target.value,
+              },
             });
           }}
         />
@@ -49,9 +58,16 @@ export default function Task({ task, onDeleteTask, onChangeTask }) {
           type="checkbox"
           checked={task.done}
           onChange={(e) => {
-            onChangeTask({
-              ...task,
-              done: e.target.checked,
+            // onChangeTask({
+            //   ...task,
+            //   done: e.target.checked,
+            // });
+            dispatch({
+              type: "changed",
+              task: {
+                ...task,
+                done: e.target.checked,
+              },
             });
           }}
         />
@@ -60,7 +76,13 @@ export default function Task({ task, onDeleteTask, onChangeTask }) {
 
         <button
           className={className + " bg-red-700"}
-          onClick={() => onDeleteTask(task.id)}
+          onClick={() =>
+            // onDeleteTask(task.id)
+            dispatch({
+              type: "deleted",
+              id: task.id,
+            })
+          }
         >
           Delete
         </button>
